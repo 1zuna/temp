@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3 hướng thiết kế: Tập đoàn Công nghệ Aurora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Unbounded:wght@500;600&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 68px)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;padding-bottom:env(safe-area-inset-bottom,0px);background:#15171C}
+:focus-visible{outline:2px solid #5AA2FF;outline-offset:3px}
+.ic{flex:none}
+.wrap{width:min(1200px,100% - 48px);margin-inline:auto}
+
+/* Switcher */
+.switcher{position:sticky;top:0;z-index:50;background:#15171C;color:#fff;padding-top:env(safe-area-inset-top,0px);font-family:'Be Vietnam Pro',system-ui,sans-serif;border-bottom:1px solid #2A2E37}
+.sw-in{display:flex;align-items:center;gap:10px;min-height:60px;width:min(1200px,100% - 24px);margin-inline:auto;overflow-x:auto;scrollbar-width:none}
+.sw-in::-webkit-scrollbar{display:none}
+.sw-note{font-size:13px;color:#B9BEC8;white-space:nowrap;margin-right:auto}
+.sw-btn{flex:none;min-height:42px;padding:0 16px;border-radius:999px;border:1px solid #3A3F4A;background:transparent;color:#fff;font:600 14px/1 'Be Vietnam Pro',system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.sw-btn[aria-pressed="true"]{background:#fff;color:#15171C;border-color:#fff}
+@media (max-width:700px){.sw-note{display:none}.sw-in{gap:8px;justify-content:center}.sw-btn{padding:0 14px}}
+
+/* Shared page structure */
+.page{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;color-scheme:var(--scheme)}
+.page[hidden]{display:none}
+.page a{color:inherit}
+.hdr{position:relative;border-bottom:1px solid var(--line)}
+.hdr-in{display:flex;align-items:center;gap:16px 32px;min-height:84px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.nav{display:flex;gap:28px;margin-left:auto}
+.nav a{text-decoration:none;font-size:15px;color:var(--nav)}
+.nav a:hover{color:var(--ink)}
+.menu-btn{display:none;margin-left:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line-strong);background:transparent;color:var(--ink);align-items:center;justify-content:center;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:var(--rb);font-weight:600;font-size:16px;text-decoration:none;white-space:nowrap}
+.page .btn-acc{background:var(--acc-fill);color:var(--acc-ink)}
+.page .btn-line{border:1px solid var(--line-strong);color:var(--ink);font-weight:500}
+.btn-sm{min-height:44px;padding:0 20px;font-size:15px}
+.actions{display:flex;flex-wrap:wrap;gap:14px}
+.sec{padding:112px 0}
+.sec-alt{background:var(--bg2)}
+.sec-head{max-width:660px;margin-bottom:48px}
+.sec-head.center{margin-inline:auto;text-align:center;margin-bottom:56px}
+.sec-head h2{font-family:var(--display);font-weight:var(--dw);font-size:var(--h2);line-height:1.16;letter-spacing:var(--ls);margin:0 0 16px}
+.sec-head p{margin:0;font-size:18px;color:var(--mu)}
+.facts{display:flex;flex-wrap:wrap;gap:24px 56px;margin:56px 0 0;padding-top:28px;border-top:1px solid var(--line)}
+.fact{display:flex;flex-direction:column-reverse;margin:0}
+.fact dt{font-size:14px;color:var(--mu)}
+.fact dd{margin:0 0 4px;font-family:var(--display);font-weight:var(--dw);font-size:38px;line-height:1.15;color:var(--fact)}
+.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--mu);font-size:14px;text-align:center}
+.feats{display:flex;flex-wrap:wrap;gap:0 48px}
+.feat{flex:1 1 320px;min-width:0}
+.feat h3{margin:0 0 8px;font-size:18px;font-weight:600;line-height:1.4}
+.feat p{margin:0;font-size:15px;color:var(--mu)}
+.events{display:flex;flex-wrap:wrap;gap:40px 32px}
+.ev{flex:1 1 300px;min-width:0}
+.ev-ph{aspect-ratio:16/10}
+.ev-date{margin:18px 0 6px;font-size:14px}
+.ev h3{margin:0;font-size:19px;font-weight:600;line-height:1.45}
+.ftr{border-top:1px solid var(--line);padding:28px 0;font-size:14px;color:var(--mu)}
+
+/* Company network: list on phone, orbit on wide screens */
+.orbit{position:relative}
+.orbit-lines{display:none}
+.hub{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center}
+.nodes{list-style:none;margin:0;padding:20px 0 0;display:flex;flex-direction:column;gap:12px;position:relative}
+.nodes::before{content:"";position:absolute;left:27px;top:0;bottom:36px;width:var(--rail-w,1px);background:var(--rail)}
+.node{display:flex;align-items:center;min-height:72px}
+.node .dot{flex:none;width:56px;display:flex;justify-content:center;position:relative}
+.node .dot::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--acc)}
+.node .lbl{flex:1;min-width:0;min-height:72px;padding:12px 18px;display:flex;flex-direction:column;justify-content:center;background:var(--card);border:1px solid var(--node-line);border-radius:16px;line-height:1.4}
+.node b{font-size:16px;font-weight:600}
+.node small{font-size:13px;color:var(--mu)}
+@media (min-width:1100px){
+  .orbit{width:var(--ow);height:var(--oh);margin:0 auto}
+  .orbit-lines{display:block;position:absolute;left:0;top:0;width:100%;height:100%}
+  .hub{position:absolute;flex-direction:column;gap:0;border-radius:50%;line-height:1.3}
+  .nodes{position:static;padding:0}
+  .nodes::before{display:none}
+  .node{position:absolute;width:var(--nw);height:var(--nh);min-height:0;gap:12px;padding:0 20px;background:var(--card);border:1px solid var(--node-line);border-radius:var(--nr)}
+  .node .dot{width:auto}
+  .node .dot::before{width:10px;height:10px}
+  .node .lbl{padding:0;min-height:0;background:none;border:0;border-radius:0}
+}
+
+@media (max-width:860px){
+  .wrap{width:calc(100% - 48px)}
+  .hdr-in{min-height:68px}
+  .nav{display:none}
+  .menu-btn{display:inline-flex}
+  .hdr .cta{display:none}
+  .hdr.open .nav{display:flex;flex-direction:column;gap:0;position:absolute;left:0;right:0;top:100%;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:4px 24px 16px}
+  .hdr.open .nav a{padding:14px 0;border-bottom:1px solid var(--line);font-size:16px;color:var(--ink)}
+  .sec{padding:56px 0}
+  .sec-head,.sec-head.center{margin-bottom:28px;text-align:left}
+  .sec-head h2{font-size:var(--h2m)}
+  .sec-head p{font-size:16px}
+  .actions{flex-direction:column}
+  .actions .btn{width:100%}
+  .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:36px;padding-top:22px}
+  .fact dt{font-size:12.5px;line-height:1.4}
+  .fact dd{font-size:28px}
+  .events{gap:32px}
+}
+
+/* ===== Hướng 1: Navy + vàng ánh kim ===== */
+.v1{--bg:#0B1A3A;--bg2:#081330;--card:#10234B;--phbg:#13285A;--ink:#F3EEE2;--mu:#AEB8CC;--nav:#C9D0DE;--acc:#D8B46A;--acc-fill:#D8B46A;--acc-ink:#0B1A3A;--line:rgba(216,180,106,.22);--line-strong:rgba(216,180,106,.6);--fact:#D8B46A;--display:'Playfair Display',Georgia,serif;--dw:600;--body:'Be Vietnam Pro',system-ui,sans-serif;--h2:48px;--h2m:32px;--ls:0;--rb:999px;--scheme:dark;
+  --rail:rgba(216,180,106,.5);--node-line:rgba(216,180,106,.42);--ow:1040px;--oh:640px;--nw:232px;--nh:72px;--nr:999px}
+.v1 .mark{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--acc);display:grid;place-items:center;color:var(--acc);font:600 20px var(--display)}
+.v1 .logo-t{font:600 21px var(--display)}
+.v1 .hero{padding:96px 0 112px}
+.v1 .hero-in{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:80px;align-items:center}
+.v1 .kicker{margin:0 0 20px;font:italic 500 21px/1.5 var(--display);color:var(--acc)}
+.v1 h1{margin:0;font:600 clamp(56px,6.2vw,88px)/1.06 var(--display);letter-spacing:-.01em}
+.v1 .rule{width:72px;height:1px;background:var(--acc);margin:32px 0 24px}
+.v1 .group{margin:0 0 12px;font-size:22px;font-weight:600}
+.v1 .lead{margin:0 0 36px;max-width:520px;font-size:18px;color:var(--mu)}
+.v1 .arch{position:relative;width:min(420px,100%);aspect-ratio:420/540;margin-inline:auto}
+.v1 .arch-frame,.v1 .arch-photo{position:absolute;border-radius:50% 50% 16px 16px / 39% 39% 16px 16px}
+.v1 .arch-frame{inset:20px 0 0 20px;border:1px solid var(--acc)}
+.v1 .arch-photo{inset:0 20px 20px 0;background:var(--phbg)}
+.v1 .sil{color:rgba(216,180,106,.55)}
+.v1 .hub{height:76px;border-radius:999px;border:2px solid var(--acc);background:var(--bg);box-shadow:0 0 40px rgba(216,180,106,.22);font:600 20px var(--display)}
+.v1 .feat{display:flex;gap:20px;padding:32px 0;border-top:1px solid var(--line)}
+.v1 .feat-ic{flex:none;width:48px;height:48px;border-radius:50%;border:1px solid rgba(216,180,106,.5);display:flex;align-items:center;justify-content:center;color:var(--acc)}
+.v1 .ev-ph{border-radius:14px;border:1px solid rgba(216,180,106,.35);background:var(--phbg)}
+.v1 .ev-ph .ic{color:var(--acc)}
+.v1 .ev-date{font:italic 500 16px var(--display);color:var(--acc)}
+.v1 .contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px 96px}
+.v1 .c-h{margin:0 0 16px;font:600 44px/1.15 var(--display)}
+.v1 .c-p{margin:0 0 28px;max-width:440px;font-size:18px;color:var(--mu)}
+.v1 .crows{margin:0}
+.v1 .crow{display:flex;gap:24px;padding:18px 0;border-top:1px solid var(--line)}
+.v1 .crow:last-child{border-bottom:1px solid var(--line)}
+.v1 .crow dt{flex:none;width:120px;color:var(--mu);font-size:15px}
+.v1 .crow dd{margin:0;font-weight:600}
+.v1 .socials{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+@media (min-width:1100px){
+  .v1 .hub{left:432px;top:232px;width:176px;height:176px;box-shadow:0 0 0 12px rgba(216,180,106,.1),0 0 90px rgba(216,180,106,.28)}
+  .v1 .hub-k{font:400 13px var(--body);color:var(--mu)}
+  .v1 .hub-n{font:600 30px var(--display)}
+  .v1 .n0{left:404px;top:54px}.v1 .n1{left:733px;top:169px}.v1 .n2{left:733px;top:399px}
+  .v1 .n3{left:404px;top:514px}.v1 .n4{left:75px;top:399px}.v1 .n5{left:75px;top:169px}
+}
+@media (max-width:860px){
+  .v1 .hero{padding:32px 0 48px}
+  .v1 .hero-in{grid-template-columns:1fr;gap:36px}
+  .v1 .hero-media{order:-1}
+  .v1 .arch{width:300px}
+  .v1 .arch-frame{inset:16px 0 0 16px}
+  .v1 .arch-photo{inset:0 16px 16px 0}
+  .v1 .kicker{font-size:17px;margin-bottom:12px}
+  .v1 h1{font-size:46px;line-height:1.08}
+  .v1 .rule{width:56px;margin:24px 0 20px}
+  .v1 .group{font-size:19px;margin-bottom:8px}
+  .v1 .lead{font-size:16px;margin-bottom:28px}
+  .v1 .fact dd{font-size:30px}
+  .v1 .contact{grid-template-columns:1fr;gap:28px}
+  .v1 .c-h{font-size:30px}
+  .v1 .c-p{font-size:16px}
+  .v1 .crow dt{width:96px}
+}
+
+/* ===== Hướng 2: Nền tối + neon ===== */
+.v2{--bg:#080A1C;--bg2:#0C0F26;--card:#11143A;--phbg:#161A45;--ink:#EEF0FF;--mu:#A4A9D4;--nav:#A4A9D4;--acc:#4FE3FF;--acc-fill:#4FE3FF;--acc-ink:#080A1C;--line:rgba(166,139,255,.22);--line-strong:#A68BFF;--fact:#4FE3FF;--display:'Unbounded',system-ui,sans-serif;--dw:600;--body:'Lexend',system-ui,sans-serif;--h2:42px;--h2m:27px;--ls:-.01em;--rb:14px;--scheme:dark;
+  --rail:#4FE3FF;--rail-w:3px;--node-line:rgba(166,139,255,.55);--ow:1080px;--oh:620px;--nw:240px;--nh:76px;--nr:14px}
+.v2 .mark{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--acc);box-shadow:0 0 18px rgba(79,227,255,.45);display:grid;place-items:center;color:var(--acc);font:600 17px var(--display)}
+.v2 .logo-t{font:600 17px var(--display)}
+.v2 .hero{padding:96px 0 112px;background-image:linear-gradient(rgba(166,139,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(166,139,255,.07) 1px,transparent 1px);background-size:56px 56px;background-position:center top}
+.v2 .hero-in{max-width:960px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+.v2 .ring{width:312px;height:312px;max-width:100%;padding:5px;border-radius:50%;background:conic-gradient(from 200deg,#4FE3FF,#A68BFF,#4FE3FF);box-shadow:0 0 60px rgba(79,227,255,.35),0 0 140px rgba(166,139,255,.25);margin-bottom:40px}
+.v2 .ring-in{width:100%;height:100%;border-radius:50%;border:6px solid var(--bg);background:var(--card)}
+.v2 .sil{color:rgba(79,227,255,.6)}
+.v2 .role{display:inline-flex;align-items:center;min-height:36px;padding:0 16px;border-radius:999px;border:1px solid rgba(166,139,255,.55);font-size:14px;color:#CFC2FF;margin:0 0 24px}
+.v2 h1{margin:0;font:600 clamp(48px,5.6vw,72px)/1.1 var(--display);letter-spacing:-.02em}
+.v2 .group{margin:18px 0 14px;font-size:22px;font-weight:500;color:var(--acc)}
+.v2 .lead{margin:0 0 32px;max-width:620px;font-size:18px;color:var(--mu)}
+.v2 .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:760px;margin-bottom:40px}
+.v2 .chip{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:10px;background:rgba(79,227,255,.08);border:1px solid rgba(79,227,255,.35);color:#9DF0FF;font-size:14px}
+.v2 .hero .actions{justify-content:center}
+.v2 .btn-acc{box-shadow:0 0 32px rgba(79,227,255,.4)}
+.v2 .facts{justify-content:center;border-top:0;gap:24px 64px}
+.v2 .fact dd{font-size:32px}
+.v2 .hub{height:72px;border-radius:16px;border:1.5px solid var(--acc);background:var(--card);box-shadow:0 0 36px rgba(79,227,255,.3);font:600 15px var(--display)}
+.v2 .nodes::before{left:26px;border-radius:2px;box-shadow:0 0 14px rgba(79,227,255,.7)}
+.v2 .node .dot::before{width:16px;height:16px;border:1.5px solid var(--acc);background:radial-gradient(circle,#4FE3FF 0 3px,#080A1C 3.5px)}
+.v2 .node .lbl{border-radius:14px}
+.v2 .node b{font-size:15px}
+.v2 .feats{gap:20px}
+.v2 .feat{padding:28px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.v2 .feat-ic{width:48px;height:48px;border-radius:12px;background:rgba(79,227,255,.1);display:flex;align-items:center;justify-content:center;color:var(--acc);margin-bottom:20px}
+.v2 .events{gap:24px}
+.v2 .ev{border-radius:18px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.v2 .ev-ph{background:var(--phbg)}
+.v2 .ev-ph .ic{color:var(--acc)}
+.v2 .ev-body{padding:20px 22px 24px}
+.v2 .ev-date{margin:0 0 8px;font-size:13px;color:var(--acc)}
+.v2 .ev h3{font-size:18px}
+.v2 .cpanel{max-width:880px;margin:0 auto;padding:56px 40px;border-radius:28px;background:var(--card);border:1px solid rgba(79,227,255,.35);box-shadow:0 0 90px rgba(79,227,255,.12);text-align:center}
+.v2 .c-h{margin:0 0 16px;font:600 36px/1.25 var(--display)}
+.v2 .c-p{margin:0 auto 32px;max-width:560px;font-size:18px;color:var(--mu)}
+.v2 .cpanel .actions{justify-content:center}
+.v2 .c-addr{margin:28px 0 0;font-size:15px;color:var(--mu)}
+@media (min-width:1100px){
+  .v2 .hub{left:448px;top:218px;width:184px;height:184px;border-radius:50%;border-width:2px;box-shadow:0 0 0 10px rgba(79,227,255,.07),0 0 70px rgba(79,227,255,.45)}
+  .v2 .hub-k{font:400 13px var(--body);color:var(--mu)}
+  .v2 .hub-n{font:600 24px var(--display)}
+  .v2 .node{box-shadow:0 0 28px rgba(166,139,255,.18)}
+  .v2 .node .dot::before{width:14px;height:14px}
+  .v2 .n0{left:420px;top:48px}.v2 .n1{left:766px;top:160px}.v2 .n2{left:766px;top:384px}
+  .v2 .n3{left:420px;top:496px}.v2 .n4{left:74px;top:384px}.v2 .n5{left:74px;top:160px}
+}
+@media (max-width:860px){
+  .v2 .hero{padding:40px 0 56px;background-size:40px 40px}
+  .v2 .ring{width:232px;height:232px;padding:4px;margin-bottom:32px}
+  .v2 .ring-in{border-width:5px}
+  .v2 .role{font-size:13px;min-height:34px;padding:0 14px;margin-bottom:20px}
+  .v2 h1{font-size:34px;line-height:1.15}
+  .v2 .group{font-size:18px;margin:14px 0 10px}
+  .v2 .lead{font-size:15px;margin-bottom:24px}
+  .v2 .chips{gap:8px;margin-bottom:28px}
+  .v2 .chip{font-size:13px;min-height:34px;padding:0 12px}
+  .v2 .hero .actions,.v2 .facts{align-self:stretch}
+  .v2 .fact dd{font-size:24px}
+  .v2 .feats{gap:12px}
+  .v2 .cpanel{padding:32px 22px;border-radius:22px}
+  .v2 .c-h{font-size:24px}
+  .v2 .c-p{font-size:15px;margin-bottom:24px}
+}
+
+/* ===== Hướng 3: Trắng tối giản ===== */
+.v3{--bg:#FFFFFF;--bg2:#F3F5F8;--card:#FFFFFF;--phbg:#F3F5F8;--ink:#0D1117;--mu:#545B68;--nav:#0D1117;--acc:#1546E0;--acc-fill:#1546E0;--acc-ink:#FFFFFF;--line:#E3E6EB;--line-strong:#0D1117;--fact:#0D1117;--display:'Inter Tight',system-ui,sans-serif;--dw:700;--body:'Inter',system-ui,sans-serif;--h2:48px;--h2m:32px;--ls:-.03em;--rb:8px;--scheme:light}
+.v3 .nav a{font-weight:500}
+.v3 .logo-t{display:flex;flex-direction:column;line-height:1.2}
+.v3 .logo-t b{font:700 22px var(--display);letter-spacing:-.02em}
+.v3 .logo-t small{font-size:12.5px;color:var(--mu)}
+.v3 .cta-dark{background:#0D1117;color:#fff}
+.v3 .btn-line{font-weight:600}
+.v3 .hero{padding:104px 0 96px}
+.v3 .hero-in{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:72px;align-items:end}
+.v3 .kicker{margin:0 0 28px;font-size:16px;color:var(--mu)}
+.v3 h1{margin:0 0 36px;font:700 clamp(64px,7.4vw,104px)/.98 var(--display);letter-spacing:-.045em}
+.v3 .statement{margin:0 0 40px;max-width:580px;font-size:26px;line-height:1.45;letter-spacing:-.01em}
+.v3 .portrait{aspect-ratio:4/5;background:var(--phbg);border-radius:4px}
+.v3 .sil{color:rgba(13,17,23,.25)}
+.v3 .facts{margin-top:80px;padding-top:0;gap:0}
+.v3 .fact{flex:1 1 200px;padding:28px 0 0 32px;border-left:1px solid var(--line)}
+.v3 .fact:first-child{padding-left:0;border-left:0}
+.v3 .fact dt{font-size:15px}
+.v3 .fact dd{font-size:56px;line-height:1.05;letter-spacing:-.03em}
+.v3 .t-hub{position:relative;width:min(320px,100%);margin:0 auto;min-height:88px;padding:12px;border-radius:12px;background:#0D1117;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.4}
+.v3 .t-hub b{font-size:17px;font-weight:600}
+.v3 .t-hub span{font-size:13px;color:#B4BAC6}
+.v3 .t-hub::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:48px;margin-left:-1px;background:#9AA1AD}
+.v3 .kids{list-style:none;margin:0;padding:96px 0 0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:24px;position:relative}
+.v3 .kids::before{content:"";position:absolute;top:48px;left:calc((100% - 120px) / 12);right:calc((100% - 120px) / 12);height:2px;background:#9AA1AD}
+.v3 .kids li{position:relative;min-height:132px;padding:18px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;line-height:1.4}
+.v3 .kids li::before{content:"";position:absolute;left:50%;top:-49px;width:2px;height:48px;margin-left:-1px;background:#9AA1AD}
+.v3 .kids .ic{color:var(--acc)}
+.v3 .kids b{display:block;font-size:16px;font-weight:600}
+.v3 .kids small{display:block;font-size:13.5px;color:var(--mu)}
+.v3 .feat{padding:28px 0 32px;border-top:1px solid var(--ink)}
+.v3 .feat-ic{display:block;color:var(--acc);margin-bottom:16px}
+.v3 .feat h3{font-size:19px;letter-spacing:-.01em}
+.v3 .feat p{font-size:15.5px}
+.v3 .ev-ph{aspect-ratio:3/2;border-radius:4px;background:#E6E9EE}
+.v3 .ev-date{font-weight:500;color:var(--mu)}
+.v3 .ev h3{letter-spacing:-.01em}
+.v3 .cband{background:#0D1117;color:#fff;padding:112px 0}
+.v3 .cband-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px 96px}
+.v3 .c-h{margin:0 0 16px;font:700 56px/1.05 var(--display);letter-spacing:-.035em}
+.v3 .c-p{margin:0;max-width:460px;font-size:18px;color:#B4BAC6}
+.v3 .cl{margin:0 0 4px;font-size:14px;color:#B4BAC6}
+.v3 .cphone{margin:0 0 20px;font:700 36px var(--display);letter-spacing:-.02em}
+.v3 .cval{margin:0 0 20px;font-size:18px;font-weight:500}
+.v3 .cband .actions{margin-top:12px;gap:12px}
+.v3 .cband .btn{min-height:48px;padding:0 22px}
+.v3 .btn-white{background:#fff;color:#0D1117}
+.v3 .btn-ol{border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:500}
+.v3 .ftr{background:#0D1117;border-top-color:rgba(255,255,255,.12);color:#8B93A1}
+@media (max-width:1099px){
+  .v3 .t-hub{width:100%;min-height:80px}
+  .v3 .t-hub::after{height:24px}
+  .v3 .kids{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-top:48px}
+  .v3 .kids::before{top:24px;left:calc((100% - 12px) / 4);right:calc((100% - 12px) / 4)}
+  .v3 .kids li{min-height:108px;padding:14px;gap:10px}
+  .v3 .kids li::before{display:none}
+  .v3 .kids li:nth-child(-n+2)::before{display:block;top:-25px;height:24px}
+}
+@media (max-width:860px){
+  .v3 .hero{padding:32px 0 40px}
+  .v3 .hero-in{grid-template-columns:1fr;gap:28px}
+  .v3 .kicker{font-size:14px;margin-bottom:18px}
+  .v3 h1{font-size:52px;margin-bottom:22px}
+  .v3 .statement{font-size:19px;margin-bottom:28px}
+  .v3 .facts{margin-top:32px;padding-top:0;gap:0}
+  .v3 .fact{padding:18px 8px 0 12px}
+  .v3 .fact dt{font-size:12.5px}
+  .v3 .fact dd{font-size:34px}
+  .v3 .cband{padding:48px 0 56px}
+  .v3 .cband-in{grid-template-columns:1fr;gap:28px}
+  .v3 .c-h{font-size:34px}
+  .v3 .c-p{font-size:15.5px}
+  .v3 .cphone{font-size:28px}
+}
+</style>
+</head>
+<body>
+<div class="switcher">
+<div class="sw-in">
+<span class="sw-note">Bản phác thảo. Tên người, tên công ty là dữ liệu mẫu.</span>
+<button type="button" class="sw-btn" data-v="v1" aria-pressed="true">1. Navy vàng</button>
+<button type="button" class="sw-btn" data-v="v2" aria-pressed="false">2. Neon</button>
+<button type="button" class="sw-btn" data-v="v3" aria-pressed="false">3. Tối giản</button>
+</div>
+</div>
+<div id="v1" class="page v1"></div>
+<div id="v2" class="page v2" hidden></div>
+<div id="v3" class="page v3" hidden></div>
+
+<script>
+(function(){
+'use strict';
+var P = {
+  ai:'<rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2.5V6M15 2.5V6M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5"/>',
+  data:'<ellipse cx="12" cy="5.5" rx="7.5" ry="3"/><path d="M4.5 5.5v13c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-13"/><path d="M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/>',
+  cloud:'<path d="M7 18.5a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 18 9.6a4.5 4.5 0 0 1-.5 8.9H7z"/>',
+  vision:'<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  security:'<path d="M12 3l7.5 2.8V12c0 4.6-3.2 7.9-7.5 9-4.3-1.1-7.5-4.4-7.5-9V5.8L12 3z"/><path d="M9 12.2l2.1 2.1L15.2 10"/>',
+  digital:'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 16.5l9 5 9-5"/>',
+  photo:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>'
+};
+function ic(k, s, w){ return '<svg class="ic" width="' + (s || 22) + '" height="' + (s || 22) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.6) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + P[k] + '</svg>'; }
+function sil(s){ return '<svg class="sil" width="' + s + '" height="' + s + '" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="100" cy="74" r="38"/><path d="M32 196c5-48 34-72 68-72s63 24 68 72"/></svg>'; }
+
+var NAME = 'Nguyễn Văn An', ROLE = 'Nhà sáng lập, Chủ tịch Hội đồng Quản trị', GROUP = 'Tập đoàn Công nghệ Aurora';
+var C = [['Aurora AI','Trí tuệ nhân tạo','ai'],['Aurora Data','Dữ liệu lớn','data'],['Aurora Cloud','Điện toán đám mây','cloud'],['Aurora Vision','Thị giác máy tính','vision'],['Aurora Secure','An ninh mạng','security'],['Aurora Digital','Chuyển đổi số','digital']];
+var F = [
+  ['ai','Trí tuệ nhân tạo (AI)','Dạy máy tính hiểu tiếng nói, chữ viết và đưa ra gợi ý, như một trợ lý làm việc không nghỉ.'],
+  ['data','Dữ liệu lớn','Phân tích hàng triệu con số để chủ doanh nghiệp biết nên bán gì, bán cho ai, vào lúc nào.'],
+  ['cloud','Điện toán đám mây','Đưa phần mềm và dữ liệu lên máy chủ an toàn, dùng được mọi lúc mọi nơi chỉ với chiếc điện thoại.'],
+  ['vision','Thị giác máy tính','Giúp camera nhận ra người, hàng hoá, biển số xe để tự động đếm, kiểm tra và cảnh báo.'],
+  ['security','An ninh mạng','Bảo vệ hệ thống và thông tin khách hàng khỏi tin tặc, lừa đảo và rò rỉ dữ liệu.'],
+  ['digital','Chuyển đổi số','Thay sổ sách, giấy tờ bằng phần mềm, giúp cửa hàng và công ty vận hành gọn gàng, ít sai sót.']
+];
+var EV = ['[Tên sự kiện doanh nghiệp đã tham dự]','[Ra mắt sản phẩm hoặc dịch vụ mới]','[Lễ ký kết hợp tác với đối tác]'];
+var FACTS = [['6','Công ty thành viên'],['6','Lĩnh vực công nghệ'],['2019','Năm thành lập']];
+var LEAD_ECO = '6 công ty thành viên, mỗi công ty giải một bài toán riêng của doanh nghiệp Việt.';
+var LEAD_CONTACT = 'Doanh nghiệp cần tư vấn giải pháp công nghệ hoặc muốn trở thành đối tác, hãy liên hệ trực tiếp với chúng tôi.';
+
+function header(v, logo, ctaCls){
+  return '<header class="hdr"><div class="wrap hdr-in">' + logo
+    + '<nav class="nav" id="' + v + '-nav" aria-label="Điều hướng chính"><a href="#' + v + '-eco">Hệ sinh thái</a><a href="#' + v + '-feat">Lĩnh vực</a><a href="#' + v + '-ev">Hoạt động</a><a href="#' + v + '-contact">Liên hệ</a></nav>'
+    + '<button type="button" class="menu-btn" aria-expanded="false" aria-controls="' + v + '-nav" aria-label="Mở menu">' + ic('menu', 20, 1.8) + '</button>'
+    + '<a class="btn btn-sm cta ' + ctaCls + '" href="#' + v + '-contact">Liên hệ hợp tác</a>'
+    + '</div></header>';
+}
+function facts(){ return '<dl class="facts">' + FACTS.map(function(f){ return '<div class="fact"><dt>' + f[1] + '</dt><dd>' + f[0] + '</dd></div>'; }).join('') + '</dl>'; }
+function nodes(){ return '<ul class="nodes">' + C.map(function(c, i){ return '<li class="node n' + i + '"><span class="dot" aria-hidden="true"></span><span class="lbl"><b>' + c[0] + '</b><small>' + c[1] + '</small></span></li>'; }).join('') + '</ul>'; }
+function hub(){ return '<div class="hub"><span class="hub-k">Tập đoàn</span> <b class="hub-n">Aurora</b></div>'; }
+function feats(v, alt){
+  return '<section class="sec' + (alt ? ' sec-alt' : '') + '" id="' + v + '-feat"><div class="wrap"><div class="sec-head"><h2>Chúng tôi làm gì</h2><p>Các lĩnh vực công nghệ của tập đoàn, giải thích bằng ngôn ngữ đời thường.</p></div><div class="feats">'
+    + F.map(function(f){ return '<div class="feat"><span class="feat-ic">' + ic(f[0], 24) + '</span><div><h3>' + f[1] + '</h3><p>' + f[2] + '</p></div></div>'; }).join('')
+    + '</div></div></section>';
+}
+function events(v, alt){
+  return '<section class="sec' + (alt ? ' sec-alt' : '') + '" id="' + v + '-ev"><div class="wrap"><div class="sec-head"><h2>Hoạt động và sự kiện</h2><p>Hình ảnh từ các sự kiện doanh nghiệp, ra mắt sản phẩm và hợp tác.</p></div><div class="events">'
+    + EV.map(function(t){ return '<article class="ev"><div class="ev-ph ph">' + ic('photo', 28, 1.5) + '<span>Ảnh sự kiện</span></div><div class="ev-body"><p class="ev-date">[Ngày diễn ra]</p><h3>' + t + '</h3></div></article>'; }).join('')
+    + '</div></div></section>';
+}
+function footer(){ return '<footer class="ftr"><div class="wrap">© 2026 ' + GROUP + '</div></footer>'; }
+
+var V1_LINES = '<svg class="orbit-lines" viewBox="0 0 1040 640" fill="none" aria-hidden="true">'
+  + '<ellipse cx="520" cy="320" rx="380" ry="230" stroke="#D8B46A" stroke-opacity=".3" stroke-dasharray="2 7"/>'
+  + '<ellipse cx="520" cy="320" rx="215" ry="130" stroke="#D8B46A" stroke-opacity=".16"/>'
+  + '<path d="M520 320 L520 90 M520 320 L849 205 M520 320 L849 435 M520 320 L520 550 M520 320 L191 435 M520 320 L191 205" stroke="#D8B46A" stroke-opacity=".5" stroke-width="1.2"/>'
+  + '<g fill="#D8B46A" fill-opacity=".55"><circle cx="120" cy="80" r="1.6"/><circle cx="960" cy="110" r="1.4"/><circle cx="980" cy="560" r="1.8"/><circle cx="70" cy="590" r="1.4"/><circle cx="700" cy="40" r="1.2"/><circle cx="330" cy="610" r="1.2"/></g></svg>';
+var V2_LINES = '<svg class="orbit-lines" viewBox="0 0 1080 620" fill="none" aria-hidden="true">'
+  + '<ellipse cx="540" cy="310" rx="400" ry="224" stroke="#A68BFF" stroke-opacity=".28" stroke-dasharray="4 8"/>'
+  + '<path d="M540 310 L540 86 M540 310 L886 198 M540 310 L886 422 M540 310 L540 534 M540 310 L194 422 M540 310 L194 198" stroke="#4FE3FF" stroke-opacity=".14" stroke-width="8" stroke-linecap="round"/>'
+  + '<path d="M540 310 L540 86 M540 310 L886 198 M540 310 L886 422 M540 310 L540 534 M540 310 L194 422 M540 310 L194 198" stroke="#4FE3FF" stroke-opacity=".75" stroke-width="1.5"/>'
+  + '<circle cx="540" cy="160" r="3.5" fill="#4FE3FF"/><circle cx="770" cy="235" r="3.5" fill="#4FE3FF"/><circle cx="690" cy="359" r="3.5" fill="#A68BFF"/><circle cx="540" cy="470" r="3.5" fill="#4FE3FF"/><circle cx="333" cy="377" r="3.5" fill="#A68BFF"/><circle cx="390" cy="262" r="3.5" fill="#4FE3FF"/></svg>';
+
+function v1(){
+  return header('v1', '<a class="logo" href="#v1-top"><span class="mark" aria-hidden="true">A</span><span class="logo-t">Tập đoàn Aurora</span></a>', 'btn-line')
+    + '<main>'
+    + '<section class="hero" id="v1-top"><div class="wrap hero-in"><div class="hero-copy">'
+    + '<p class="kicker">' + ROLE + '</p><h1>' + NAME + '</h1><div class="rule"></div><p class="group">' + GROUP + '</p>'
+    + '<p class="lead">Dẫn dắt 6 công ty công nghệ trong lĩnh vực trí tuệ nhân tạo, dữ liệu và chuyển đổi số, giúp doanh nghiệp Việt làm việc nhanh hơn, chính xác hơn.</p>'
+    + '<div class="actions"><a class="btn btn-acc" href="#v1-eco">Xem hệ sinh thái</a><a class="btn btn-line" href="#v1-contact">Liên hệ hợp tác</a></div>' + facts()
+    + '</div><div class="hero-media"><div class="arch"><div class="arch-frame"></div><div class="arch-photo ph">' + sil(150) + '<span>Ảnh chân dung</span></div></div></div></div></section>'
+    + '<section class="sec sec-alt" id="v1-eco"><div class="wrap"><div class="sec-head center"><h2>Hệ sinh thái Aurora</h2><p>' + LEAD_ECO + '</p></div>'
+    + '<div class="orbit">' + V1_LINES + hub() + nodes() + '</div></div></section>'
+    + feats('v1', false) + events('v1', true)
+    + '<section class="sec" id="v1-contact"><div class="wrap contact"><div><h2 class="c-h">Liên hệ hợp tác</h2><p class="c-p">' + LEAD_CONTACT + '</p>'
+    + '<div class="actions"><a class="btn btn-acc" href="#v1-contact">' + ic('phone', 18, 1.8) + 'Gọi [Số điện thoại]</a></div></div>'
+    + '<div><dl class="crows"><div class="crow"><dt>Điện thoại</dt><dd>[Số điện thoại]</dd></div><div class="crow"><dt>Email</dt><dd>[Email liên hệ]</dd></div><div class="crow"><dt>Địa chỉ</dt><dd>[Địa chỉ văn phòng]</dd></div></dl>'
+    + '<div class="socials"><a class="btn btn-line btn-sm" href="#v1-contact">Facebook</a><a class="btn btn-line btn-sm" href="#v1-contact">TikTok</a><a class="btn btn-line btn-sm" href="#v1-contact">Zalo</a></div></div>'
+    + '</div></section></main>' + footer();
+}
+function v2(){
+  return header('v2', '<a class="logo" href="#v2-top"><span class="mark" aria-hidden="true">A</span><span class="logo-t">Aurora Group</span></a>', 'btn-acc')
+    + '<main>'
+    + '<section class="hero" id="v2-top"><div class="wrap hero-in">'
+    + '<div class="ring"><div class="ring-in ph">' + sil(120) + '<span>Ảnh chân dung</span></div></div>'
+    + '<p class="role">' + ROLE + '</p><h1>' + NAME + '</h1><p class="group">' + GROUP + '</p>'
+    + '<p class="lead">Dẫn dắt 6 công ty công nghệ đưa trí tuệ nhân tạo vào công việc hằng ngày của doanh nghiệp Việt.</p>'
+    + '<div class="chips">' + C.map(function(c){ return '<span class="chip">' + c[1] + '</span>'; }).join('') + '</div>'
+    + '<div class="actions"><a class="btn btn-acc" href="#v2-eco">Khám phá hệ sinh thái</a><a class="btn btn-line" href="#v2-contact">Liên hệ hợp tác</a></div>' + facts()
+    + '</div></section>'
+    + '<section class="sec sec-alt" id="v2-eco"><div class="wrap"><div class="sec-head center"><h2>Hệ sinh thái Aurora</h2><p>' + LEAD_ECO + '</p></div>'
+    + '<div class="orbit">' + V2_LINES + hub() + nodes() + '</div></div></section>'
+    + feats('v2', false) + events('v2', true)
+    + '<section class="sec" id="v2-contact"><div class="wrap"><div class="cpanel"><h2 class="c-h">Liên hệ hợp tác</h2><p class="c-p">' + LEAD_CONTACT + '</p>'
+    + '<div class="actions"><a class="btn btn-acc" href="#v2-contact">' + ic('phone', 18, 1.8) + 'Gọi [Số điện thoại]</a><a class="btn btn-line" href="#v2-contact">Gửi email</a><a class="btn btn-line" href="#v2-contact">Zalo</a><a class="btn btn-line" href="#v2-contact">TikTok</a></div>'
+    + '<p class="c-addr">[Địa chỉ văn phòng]</p></div></div></section></main>' + footer();
+}
+function v3(){
+  return header('v3', '<a class="logo" href="#v3-top"><span class="logo-t"><b>Aurora</b><small>Tập đoàn Công nghệ</small></span></a>', 'cta-dark')
+    + '<main>'
+    + '<section class="hero" id="v3-top"><div class="wrap"><div class="hero-in"><div class="hero-copy">'
+    + '<p class="kicker">Nhà sáng lập và Chủ tịch Hội đồng Quản trị, ' + GROUP + '</p><h1>' + NAME + '</h1>'
+    + '<p class="statement">Xây dựng và dẫn dắt 6 công ty công nghệ, giúp doanh nghiệp Việt ứng dụng trí tuệ nhân tạo vào công việc hằng ngày.</p>'
+    + '<div class="actions"><a class="btn btn-acc" href="#v3-eco">Xem các công ty</a><a class="btn btn-line" href="#v3-contact">Liên hệ hợp tác</a></div>'
+    + '</div><div class="portrait ph">' + sil(140) + '<span>Ảnh chân dung</span></div></div>' + facts() + '</div></section>'
+    + '<section class="sec sec-alt" id="v3-eco"><div class="wrap"><div class="sec-head"><h2>Hệ sinh thái Aurora</h2><p>' + LEAD_ECO + '</p></div>'
+    + '<div class="tree"><div class="t-hub"><b>' + GROUP + '</b><span>Công ty mẹ</span></div><ul class="kids">'
+    + C.map(function(c){ return '<li>' + ic(c[2], 22, 1.7) + '<span><b>' + c[0] + '</b><small>' + c[1] + '</small></span></li>'; }).join('')
+    + '</ul></div></div></section>'
+    + feats('v3', false) + events('v3', true)
+    + '<section class="cband" id="v3-contact"><div class="wrap cband-in"><div><h2 class="c-h">Liên hệ hợp tác</h2><p class="c-p">' + LEAD_CONTACT + '</p></div>'
+    + '<div><p class="cl">Điện thoại</p><p class="cphone">[Số điện thoại]</p><p class="cl">Email</p><p class="cval">[Email liên hệ]</p><p class="cl">Địa chỉ</p><p class="cval">[Địa chỉ văn phòng]</p>'
+    + '<div class="actions"><a class="btn btn-white" href="#v3-contact">Gọi ngay</a><a class="btn btn-ol" href="#v3-contact">Zalo</a><a class="btn btn-ol" href="#v3-contact">Facebook</a><a class="btn btn-ol" href="#v3-contact">TikTok</a></div></div>'
+    + '</div></section></main>' + footer();
+}
+
+document.getElementById('v1').innerHTML = v1();
+document.getElementById('v2').innerHTML = v2();
+document.getElementById('v3').innerHTML = v3();
+
+var btns = document.querySelectorAll('.sw-btn');
+function show(v, scroll){
+  ['v1','v2','v3'].forEach(function(id){ document.getElementById(id).hidden = id !== v; });
+  btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-v') === v)); });
+  try { history.replaceState(null, '', '#huong-' + v.charAt(1)); } catch (e) {}
+  if (scroll) window.scrollTo(0, 0);
+}
+btns.forEach(function(b){ b.addEventListener('click', function(){ show(b.getAttribute('data-v'), true); }); });
+var m = /^#(?:huong-([123])|(v[123])-)/.exec(location.hash || '');
+show(m ? (m[1] ? 'v' + m[1] : m[2]) : 'v1', false);
+
+document.addEventListener('click', function(e){
+  var t = e.target;
+  if (!(t instanceof Element)) return;
+  var mb = t.closest('.menu-btn');
+  if (mb){ var h = mb.closest('.hdr'), open = !h.classList.contains('open'); h.classList.toggle('open', open); mb.setAttribute('aria-expanded', String(open)); return; }
+  var a = t.closest('.nav a');
+  if (a){ var hd = a.closest('.hdr'); hd.classList.remove('open'); var b2 = hd.querySelector('.menu-btn'); if (b2) b2.setAttribute('aria-expanded', 'false'); }
+});
+})();
+</script>
+</body>
+</html>
